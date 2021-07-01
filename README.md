@@ -1,5 +1,5 @@
 # Thoth
-![Logo of an Ibis](./docs/media/thoth-token.jpg)
+![Logo of an Ibis](./docs/media/thoth-token.png)
 
 A form handler with a few interactive tricks up its beak.
 
