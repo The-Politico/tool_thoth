@@ -120,7 +120,7 @@ and `THOTH_SLACK_TOKEN` of this dev app into your environment as described above
 - Setting `Request URL` in `Interactivity & Shortcuts` to `<YOUR_TUNNEL>/interactivity/`
 - Setting each slash command in `Slash Commands` to `<YOUR_TUNNEL>/slash/`.
 
-Read more about how the handlers work in our [extended docs]('./docs/slack-apps.md').
+Read more about how the handlers work in our [extended docs](./docs/slack-apps.md).
 
 ## Credits
 Logo [iconography](https://thenounproject.com/search/?q=ibis&i=962350) by [parkjisun](https://thenounproject.com/naripuru/) from [The Noun Project](https://thenounproject.com/).
