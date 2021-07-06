@@ -1,6 +1,6 @@
 import { HT_NOTES_UPDATE } from 'Constants/actions';
 
-export default (initial, edited = false) => ({
+export default (initial, useEditingMeta = false) => ({
   block_id: 'notes:input',
   type: 'input',
   element: {
@@ -10,10 +10,10 @@ export default (initial, edited = false) => ({
     initial_value: initial,
     placeholder: {
       type: 'plain_text',
-      text: edited
-        ? 'Use this space to provide any extra information the homepage '
-          + 'team should know about this story in regards to headlines'
-        : 'Please use this space to indicate what you\'ve changed',
+      text: useEditingMeta
+        ? 'Please use this space to indicate what you\'ve changed'
+        : 'Use this space to provide any extra information the homepage '
+          + 'team should know about this story in regards to headlines',
     },
   },
   label: {
