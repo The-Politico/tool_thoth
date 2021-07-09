@@ -1,60 +1,73 @@
 import slack from 'Utils/slack/index';
 import { HEADLINE_TEST_CHANNEL } from 'Constants/locations';
-import { HEADLINE_TESTS as alerts } from 'Constants/alerts';
 import databases from 'Databases/index';
 import { HT_UPDATE } from 'Constants/commands';
 import messages from 'Content/messages/index';
 import attachments from 'Content/attachments/index';
+import { log } from 'Utils/console';
+import { HEADLINE_TEST_BOT } from 'Constants/users';
 
-const alertTimes = Object
-  .keys(alerts)
-  .sort((a, b) => a - b);
+const getAlertTime = function parseCustomAlertTime(event) {
+  const now = new Date();
+  const def = [
+    now.getUTCHours(),
+    now.getUTCMinutes() >= 30 ? '30' : '00',
+  ];
+
+  if (!event.alertTime) {
+    return def;
+  }
+
+  const alertTimeSplit = event.alertTime.split(':');
+  if (alertTimeSplit.length !== 2) {
+    return def;
+  }
+
+  const parsedHour = parseInt(alertTimeSplit[0], 10);
+  if (parsedHour < 1 || parsedHour > 23) {
+    return def;
+  }
+
+  const minute = alertTimeSplit[1];
+  if (minute !== '00' && minute !== '30') {
+    return def;
+  }
+
+  return [
+    alertTimeSplit[0],
+    alertTimeSplit[1],
+  ];
+};
 
 const notifyHeadlineTest = async function notifyHeadlineTest(event) {
-  const now = new Date();
-  const nowUTCHour = event.alertTime || now.getUTCHours();
+  const [alertTimeHour, alertTimeMinute] = getAlertTime(event);
 
-  const alertType = alerts[nowUTCHour];
-  if (alertType) {
-    const startRange = new Date();
-    startRange.setUTCHours(nowUTCHour);
-    startRange.setUTCMinutes(0);
-    startRange.setUTCSeconds(0);
-    startRange.setUTCMilliseconds(0);
+  const startRange = new Date();
+  startRange.setUTCHours(alertTimeHour);
+  startRange.setUTCMinutes(alertTimeMinute);
+  startRange.setUTCSeconds(0);
+  startRange.setUTCMilliseconds(0);
 
-    const alertIdx = alertTimes.findIndex((a) => a === `${nowUTCHour}`);
-    const nextAlertTime = parseInt(alertTimes[alertIdx + 1], 10);
+  const endRange = new Date(startRange.getTime() + 1800000);
 
-    const endRange = nextAlertTime
-      ? new Date(
-        startRange.getTime()
-        // shift to next alert hour
-        + (nextAlertTime - nowUTCHour)
-        // convert hours to milliseconds
-        * 60 * 60 * 1000,
-      )
-      : new Date(
-        startRange.getTime()
-        // shift to first alert the next day
-        + (24 + (parseInt(alertTimes[0], 10) - parseInt(nowUTCHour, 10)))
-        // convert hours to milliseconds
-        * 60 * 60 * 1000,
-      );
+  const requests = await databases.headlineTest.get();
 
-    const requests = await databases.headlineTest.get();
+  const requestsForAlert = requests.filter((r) => {
+    const publishTime = r.publishDate.getTime();
+    return (
+      publishTime >= startRange.getTime() && publishTime < endRange.getTime()
+    );
+  });
 
-    const requestsForAlert = requests.filter((r) => {
-      const publishTime = r.publishDate.getTime();
-      return (
-        publishTime > startRange.getTime() && publishTime < endRange.getTime()
-      );
-    });
+  log(`Bridge /  HT-Update  /  ${startRange} – ${endRange}  /  ${requestsForAlert.length} Requests Found  /\n`);
 
+  if (requestsForAlert.length > 0) {
     slack.postMessage({
+      ...HEADLINE_TEST_BOT,
+
       channel: HEADLINE_TEST_CHANNEL(),
 
       text: messages.headlineTestUpdate({
-        type: alertType,
         requests: requestsForAlert,
       }),
 

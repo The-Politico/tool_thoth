@@ -31,14 +31,14 @@ export default async (request, context, callback) => {
     event = parseAndAuthenticate(request);
   } catch (e) {
     const eResp = badRequestError(e);
-    log(`  Response /  Error  /  ${eResp[1].statusCode}  /  ${JSON.parse(eResp[1].body).error}`);
+    log(`Response /  Error  /  ${eResp[1].statusCode}  /  ${JSON.parse(eResp[1].body).error}\n`);
     callback(...eResp);
     return;
   }
 
   if (event === false) {
     const eResp = invalidAuthError();
-    log(`  Response /  Error  /  ${eResp[1].statusCode}  /  ${JSON.parse(eResp[1].body).error}`);
+    log(`Response /  Error  /  ${eResp[1].statusCode}  /  ${JSON.parse(eResp[1].body).error}\n`);
     callback(...eResp);
     return;
   }
@@ -56,7 +56,7 @@ export default async (request, context, callback) => {
 
   if (!endpointName || !(endpointName in endpointHandlers)) {
     const eResp = invalidSchemeError(endpointName);
-    log(`  Response /  Error  /  ${eResp[1].statusCode}  /  ${JSON.parse(eResp[1].body).error}`);
+    log(`Response /  Error  /  ${eResp[1].statusCode}  /  ${JSON.parse(eResp[1].body).error}\n`);
     callback(...eResp);
     return;
   }
@@ -71,7 +71,7 @@ export default async (request, context, callback) => {
       responseBody = response;
     }
 
-    log(`  Response /  Success  /  200  /  ${responseBody}`);
+    log(`Response /  Success  /  200  /  ${responseBody}`);
     callback(null, {
       statusCode: 200,
       body: responseBody,
@@ -84,7 +84,7 @@ export default async (request, context, callback) => {
     /* eslint-disable-next-line no-console */
     console.error(e);
     const eResp = serverError();
-    log(`  Response /  Error  /  ${eResp[1].statusCode}  /  ${JSON.parse(eResp[1].body).error}`);
+    log(`Response /  Error  /  ${eResp[1].statusCode}  /  ${JSON.parse(eResp[1].body).error}\n`);
     callback(...eResp);
   }
 };

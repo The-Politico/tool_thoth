@@ -4,7 +4,10 @@ import parseManual from './manual';
 import parseAPI from './api';
 
 const parseAndAuthenticate = function parseAndAuthenticate(request) {
-  if (request.headers && request.headers['X-Slack-Signature']) {
+  if (request.headers && (
+    request.headers['X-Slack-Signature']
+    || request.headers['x-slack-signature']
+  )) {
     log(` Request /  Slack  /  ${request.httpMethod}  /  ${typeof request.body}`);
     return parseSlack(request);
   }

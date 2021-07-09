@@ -1,5 +1,6 @@
 import toEnglishNumber from 'Utils/toEnglishNumber';
 import { HT_HEADLINE_LINK_UPDATE } from 'Constants/actions';
+import { MIN_HEADLINES } from '../../constants';
 
 export default (idx, initial) => ({
   block_id: `headlines:input:${toEnglishNumber(idx + 1)}`,
@@ -15,7 +16,9 @@ export default (idx, initial) => ({
   },
   label: {
     type: 'plain_text',
-    text: `Option ${toEnglishNumber(idx + 1)}`,
+    text: idx === 0
+      ? 'Original headline'
+      : `Alternative headline ${toEnglishNumber(idx)}`,
   },
-  optional: true,
+  optional: idx > MIN_HEADLINES - 1,
 });

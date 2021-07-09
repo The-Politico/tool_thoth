@@ -1,5 +1,8 @@
 import get from 'lodash/get';
-import toSlackTime from 'Utils/toSlackTime';
+import {
+  dateToSlackTimeOption,
+  stringToSlackTimeOption,
+} from 'Utils/toSlackTimeOption';
 import toSlackDate from 'Utils/toSlackDate';
 import getNextHour from 'Utils/getNextHour';
 
@@ -57,12 +60,12 @@ const view = function view(self) {
 
       if (useValuesInView) {
         initialDate = values.publishDate;
-        initialTime = values.publishTime;
+        initialTime = stringToSlackTimeOption(values.publishTime);
       } else if (formerlyAsap) {
         const nextHour = getNextHour();
 
-        initialDate = toSlackDate(nextHour);
-        initialTime = toSlackTime(nextHour);
+        initialDate = toSlackDate(nextHour, self.state.tzOffset);
+        initialTime = dateToSlackTimeOption(nextHour, self.state.tzOffset);
       }
 
       output.push(blocks.when.inputs(initialDate, initialTime));
@@ -73,7 +76,7 @@ const view = function view(self) {
 
   if (verifiedDate || headlineOptions > 0) {
     output.push(blocks.headlines.header);
-    output.push(blocks.headlines.dek);
+    output.push(blocks.headlines.dek());
 
     if (headlineOptions > 0) {
       (new Array(headlineOptions)).fill(undefined).forEach((_, idx) => {

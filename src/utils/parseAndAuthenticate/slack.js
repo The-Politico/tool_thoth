@@ -5,8 +5,10 @@ const parseSlack = function parseSlack(request) {
   const { THOTH_SLACK_SECRET } = process.env;
 
   const body = querystring.parse(request.body);
-  const timestamp = request.headers['X-Slack-Request-Timestamp'];
-  const slackSignature = request.headers['X-Slack-Signature'];
+  const timestamp = request.headers['X-Slack-Request-Timestamp']
+  || request.headers['x-slack-request-timestamp'];
+  const slackSignature = request.headers['X-Slack-Signature']
+  || request.headers['x-slack-signature'];
 
   if (Math.abs(new Date() - new Date(timestamp)) > 60 * 5) {
     // The request timestamp is more than five minutes from local time.

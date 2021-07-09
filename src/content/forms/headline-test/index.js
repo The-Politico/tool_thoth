@@ -10,7 +10,6 @@ import parse from './parse';
 import updateValues from './updateValues';
 import validate from './validate';
 import validateFutureDate from './validateFutureDate';
-import isBeforeNextAlert from './isBeforeNextAlert';
 import exportValues from './exportValues';
 import importValues from './importValues';
 import updateTimezone from './updateTimezone';
@@ -50,7 +49,6 @@ const htRequest = function htRequest(
   self.import = () => importValues(self);
   self.export = () => exportValues(self);
   self.updateTimezone = async (user) => updateTimezone(self, user);
-  self.isBeforeNextAlert = () => isBeforeNextAlert(self);
   self.validateFutureDate = (day, time) => validateFutureDate(
     self, day, time,
   );

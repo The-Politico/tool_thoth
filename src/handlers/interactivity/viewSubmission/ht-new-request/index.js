@@ -1,10 +1,12 @@
 import slack from 'Utils/slack/index';
+import { log } from 'Utils/console';
 import forms from 'Content/forms/index';
 import attachments from 'Content/attachments/index';
 import messages from 'Content/messages/index';
 
 import { HT_NEW_REQUEST } from 'Constants/callbacks';
 import { HEADLINE_TEST_CHANNEL } from 'Constants/locations';
+import { HEADLINE_TEST_BOT } from 'Constants/users';
 
 const newHeadlineRequest = async function newHeadlineRequest(event, payload) {
   const { view } = payload;
@@ -21,7 +23,7 @@ const newHeadlineRequest = async function newHeadlineRequest(event, payload) {
     form
       .export()
       .then(() => {
-        if (form.isBeforeNextAlert()) {
+        if (!form.values.publishDate) {
           const notificationText = messages.headlineTestNotification(
             form.state.useEditingMeta,
           );
@@ -30,18 +32,22 @@ const newHeadlineRequest = async function newHeadlineRequest(event, payload) {
             { id: form.id },
           );
 
-          notificationAttachmennt
+          return notificationAttachmennt
             .import()
-            .then(() => {
-              slack.postMessage({
-                channel: HEADLINE_TEST_CHANNEL(),
-                text: notificationText,
-                attachments: [
-                  notificationAttachmennt.view(),
-                ],
-              });
-            });
+            .then(() => slack.postMessage({
+              ...HEADLINE_TEST_BOT,
+              channel: HEADLINE_TEST_CHANNEL(),
+              text: notificationText,
+              attachments: [
+                notificationAttachmennt.view(),
+              ],
+            }));
         }
+
+        return new Promise((resolve) => resolve());
+      })
+      .catch((e) => {
+        log(e, 'error');
       });
 
     return {

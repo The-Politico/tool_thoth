@@ -1,10 +1,10 @@
 import gootenberg from 'Utils/gootenberg';
 import slack from 'Utils/slack/index';
 import fromSlackDateTime from 'Utils/fromSlackDateTime';
-import inXSeconds from 'Utils/inXSeconds';
 
 import { HEADLINE_TESTS_SHEET } from 'Constants/locations';
 import database from 'Databases/headline-test/index';
+import getLastHour from 'Utils/getLastHour';
 
 const exportValues = async function exportValues(self) {
   const { id, state, values } = self;
@@ -29,7 +29,7 @@ const exportValues = async function exportValues(self) {
 
   const publishStr = (publishDate && publishTime)
     ? fromSlackDateTime(publishDate, publishTime, state.tzOffset).getTime()
-    : inXSeconds(300).getTime();
+    : getLastHour().getTime();
 
   const row = [
     [

@@ -1,11 +1,16 @@
-export default {
+import { HEADLINE_TEST_GUIDE } from 'Constants/locations';
+
+export default () => ({
   block_id: 'headlines:dek',
   type: 'context',
   elements: [
     {
-      type: 'plain_text',
-      text: 'Below, please provide two to five options for headlines '
-      + 'you want to test.',
+      type: 'mrkdwn',
+      text: 'Please provide your original headline along with at least '
+      + 'one alternative you want to test. If you need help coming up with '
+      + 'new headline ideas, check out our '
+      + `<https://docs.google.com/document/d/${HEADLINE_TEST_GUIDE()}|`
+      + 'Best Practices Guide>.',
     },
   ],
-};
+});

@@ -26,7 +26,9 @@ const getValueFromSlackPayload = function getValue(payload, key, subkey) {
   }
 
   if (Object.hasOwnProperty.call(valueObj, 'selected_option')) {
-    return valueObj.selected_option.value;
+    if (valueObj.selected_option) {
+      return valueObj.selected_option.value;
+    }
   }
 
   return undefined;

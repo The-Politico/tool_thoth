@@ -59,7 +59,7 @@ const validate = async function validate(self) {
     formValid = false;
     appendOrCreate(
       'Headlines',
-      `– Please provide at least ${MIN_HEADLINES} headline choices.`,
+      `– Please provide at least ${MIN_HEADLINES - 1} alternative headline choices.`,
     );
   }
 

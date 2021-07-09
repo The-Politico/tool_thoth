@@ -13,8 +13,8 @@ const validateFutureDate = function validateFutureDate(self, day, time) {
 
   const now = (new Date()).getTime();
 
-  /* If time within an hour from hour, consider it past */
-  if (now > datetimeValue) {
+  /* If time within half hour from now, consider it past */
+  if (datetimeValue.getTime() < now + 1800000) {
     return false;
   }
 

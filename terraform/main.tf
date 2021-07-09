@@ -25,6 +25,10 @@ variable "google_headline_test_sheet" {
   type = string
 }
 
+variable "google_headline_help_doc" {
+  type = string
+}
+
 variable "lambda_api_token" {
   type = string
 }
@@ -64,6 +68,7 @@ resource "aws_lambda_function" "function" {
       AWS = "true"
       SLACK_HEADLINE_TEST_CHANNEL = var.slack_headline_test_channel
       GOOGLE_HEADLINE_TESTS = var.google_headline_test_sheet
+      GOOGLE_HEADLINE_HELP = var.google_headline_help_doc
     }
   }
   layers = [
@@ -165,36 +170,15 @@ resource "aws_lambda_permission" "apigw" {
    source_arn = "${aws_api_gateway_rest_api.gateway.execution_arn}/*/*"
 }
 
-resource "aws_cloudwatch_event_rule" "bridge_am" {
-  name                = "${var.project_slug}__ht-am-update"
-  description         = "Post the AM update for headline tests"
-  schedule_expression = "cron(0 10 * * ? *)"
+
+resource "aws_cloudwatch_event_rule" "bridge" {
+  name                = "${var.project_slug}__ht-update"
+  description         = "Post the half-hour updates for headline tests"
+  schedule_expression = "cron(0/30 * ? * * *)"
 }
 
-resource "aws_cloudwatch_event_rule" "bridge_pm" {
-  name                = "${var.project_slug}__ht-pm-update"
-  description         = "Post the PM update for headline tests"
-  schedule_expression = "cron(0 22 * * ? *)"
-}
-
-resource "aws_cloudwatch_event_target" "bridge_am_target" {
-  rule      = aws_cloudwatch_event_rule.bridge_am.name
-  arn       = aws_lambda_function.function.arn
-  input     = <<EOF
-{
-  "body": {
-    "manual": true,
-    "endpoint": "bridge",
-    "token": "${var.lambda_api_token}",
-    "command": "headline-test-update",
-    "alertTime": 10
-  }
-}
-EOF
-}
-
-resource "aws_cloudwatch_event_target" "bridge_pm_target" {
-  rule      = aws_cloudwatch_event_rule.bridge_pm.name
+resource "aws_cloudwatch_event_target" "bridge_target" {
+  rule      = aws_cloudwatch_event_rule.bridge.name
   arn       = aws_lambda_function.function.arn
   input     = <<EOF
   {
@@ -202,25 +186,17 @@ resource "aws_cloudwatch_event_target" "bridge_pm_target" {
       "manual": true,
       "endpoint": "bridge",
       "token": "${var.lambda_api_token}",
-      "command": "headline-test-update",
-      "alertTime": 22
+      "command": "headline-test-update"
     }
   }
 EOF
 }
 
-resource "aws_lambda_permission" "bridge_am_permission" {
+resource "aws_lambda_permission" "bridge_permission" {
     action = "lambda:InvokeFunction"
     function_name = aws_lambda_function.function.function_name
     principal = "events.amazonaws.com"
-    source_arn = aws_cloudwatch_event_rule.bridge_am.arn
-}
-
-resource "aws_lambda_permission" "bridge_pm_permission" {
-    action = "lambda:InvokeFunction"
-    function_name = aws_lambda_function.function.function_name
-    principal = "events.amazonaws.com"
-    source_arn = aws_cloudwatch_event_rule.bridge_pm.arn
+    source_arn = aws_cloudwatch_event_rule.bridge.arn
 }
 
 output "base_api_url" {

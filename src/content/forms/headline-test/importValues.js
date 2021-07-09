@@ -7,7 +7,7 @@ const importValues = async function importValues(self) {
   const all = await database.get();
   const data = all.find((d) => d.id === self.id);
 
-  const isNow = data.publishDate.getTime() < inXSeconds(3600).getTime();
+  const isNow = data.publishDate.getTime() < inXSeconds(1800).getTime();
 
   if (data) {
     const offset = self.state.tzOffset;
