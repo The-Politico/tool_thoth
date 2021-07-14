@@ -62,7 +62,7 @@ const notifyHeadlineTest = async function notifyHeadlineTest(event) {
   log(`Bridge /  HT-Update  /  ${startRange} – ${endRange}  /  ${requestsForAlert.length} Requests Found  /\n`);
 
   if (requestsForAlert.length > 0) {
-    slack.postMessage({
+    await slack.postMessage({
       ...HEADLINE_TEST_BOT,
 
       channel: HEADLINE_TEST_CHANNEL(),
@@ -70,21 +70,31 @@ const notifyHeadlineTest = async function notifyHeadlineTest(event) {
       text: messages.headlineTestUpdate({
         requests: requestsForAlert,
       }),
+    });
 
-      attachments: requestsForAlert.map(
-        (r) => attachments
-          .headlineTest({
-            id: r.id,
-            values: {
-              user: r.user,
-              link: r.link,
-              publishDate: r.publishDate,
-              notes: r.notes,
-              headlines: r.headlines,
-            },
-          })
-          .view(),
-      ),
+    requestsForAlert.forEach((r) => {
+      slack.postMessage({
+        ...HEADLINE_TEST_BOT,
+
+        channel: HEADLINE_TEST_CHANNEL(),
+
+        text: `*${r.headlines[0]}*`,
+
+        attachments: [
+          attachments
+            .headlineTest({
+              id: r.id,
+              values: {
+                user: r.user,
+                link: r.link,
+                publishDate: r.publishDate,
+                notes: r.notes,
+                headlines: r.headlines,
+              },
+            })
+            .view(),
+        ],
+      });
     });
   }
 

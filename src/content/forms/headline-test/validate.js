@@ -49,7 +49,7 @@ const validate = async function validate(self) {
       formValid = false;
       appendOrCreate(
         'Publish Time',
-        '– Publish times should be at least an hour in '
+        '– Publish times should be at least half an hour in '
           + 'the future. If the story is already published, click "Now".',
       );
     }

@@ -8,7 +8,7 @@ export default (editing = false) => ({
         ? 'Thank you for editing your headline test. The homepage team has '
           + 'been notified about your change and will reach out if they have '
           + 'any questions.'
-        : 'Thank you for submiting a headline test. The homepage team has '
+        : 'Thank you for submitting a headline test. The homepage team has '
           + 'been notified about your request and will reach out if they have '
           + 'any questions.',
     },

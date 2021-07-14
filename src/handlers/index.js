@@ -72,6 +72,7 @@ export default async (request, context, callback) => {
     }
 
     log(`Response /  Success  /  200  /  ${responseBody}`);
+
     callback(null, {
       statusCode: 200,
       body: responseBody,
