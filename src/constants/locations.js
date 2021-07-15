@@ -9,3 +9,6 @@ export const HEADLINE_TEST_CHANNEL = () => (
 );
 export const HEADLINE_TESTS_SHEET = () => process.env.GOOGLE_HEADLINE_TESTS;
 export const HEADLINE_TEST_GUIDE = () => process.env.GOOGLE_HEADLINE_HELP;
+export const HEADLINE_TEST_ANALYTICS = () => (
+  process.env.GOOGLE_HEADLINE_ANALYTICS
+);

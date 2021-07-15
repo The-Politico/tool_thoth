@@ -3,8 +3,8 @@ const dateToSlackTimeOption = function toSlackTimeOption(dateObj, offset = 0) {
 
   const hour = offsetDate.getUTCHours();
 
-  const hourBaseTwelve = hour % 12;
-  const amPm = hour > 12 ? 'PM' : 'AM';
+  const hourBaseTwelve = hour === 12 ? 12 : hour % 12;
+  const amPm = hour >= 12 ? 'PM' : 'AM';
 
   const minutes = offsetDate.getUTCMinutes();
   const nearestHalfHour = minutes >= 30 ? '30' : '00';

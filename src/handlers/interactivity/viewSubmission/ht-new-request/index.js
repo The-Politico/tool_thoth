@@ -3,6 +3,7 @@ import { log } from 'Utils/console';
 import forms from 'Content/forms/index';
 import attachments from 'Content/attachments/index';
 import messages from 'Content/messages/index';
+import reportAnalytics from 'Utils/reportAnalytics';
 
 import { HT_NEW_REQUEST } from 'Constants/callbacks';
 import { HEADLINE_TEST_CHANNEL } from 'Constants/locations';
@@ -23,6 +24,14 @@ const newHeadlineRequest = async function newHeadlineRequest(event, payload) {
     form
       .export()
       .then(() => {
+        const analyticsSubhandler = form.state.useEditingMeta
+          ? 'edit' : 'new';
+        reportAnalytics({
+          user: payload.user.id,
+          handler: 'view_submission',
+          subhandler: analyticsSubhandler,
+        });
+
         if (!form.values.publishDate) {
           const notificationText = messages.headlineTestNotification(
             form.state.useEditingMeta,

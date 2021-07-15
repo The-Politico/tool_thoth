@@ -6,6 +6,8 @@ import { HT_LIST_REQUEST } from 'Constants/commands';
 import messages from 'Content/messages/index';
 import attachments from 'Content/attachments/index';
 
+import reportAnalytics from 'Utils/reportAnalytics';
+
 const editHeadlineTest = async function editHeadlineTest(event) {
   const requests = await databases.headlineTest.get();
 
@@ -84,6 +86,12 @@ const editHeadlineTest = async function editHeadlineTest(event) {
   };
 
   slack.dm(event.user_id, message);
+
+  reportAnalytics({
+    user: event.user_id,
+    handler: 'slash',
+    subhandler: 'list',
+  });
 
   return true;
 };

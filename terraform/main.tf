@@ -25,7 +25,12 @@ variable "google_headline_test_sheet" {
   type = string
 }
 
-variable "google_headline_help_doc" {
+variable "google_headline_test_help" {
+  type = string
+}
+
+
+variable "google_headline_test_analytics" {
   type = string
 }
 
@@ -68,7 +73,9 @@ resource "aws_lambda_function" "function" {
       AWS = "true"
       SLACK_HEADLINE_TEST_CHANNEL = var.slack_headline_test_channel
       GOOGLE_HEADLINE_TESTS = var.google_headline_test_sheet
-      GOOGLE_HEADLINE_HELP = var.google_headline_help_doc
+      GOOGLE_HEADLINE_HELP = var.google_headline_test_help
+      GOOGLE_HEADLINE_ANALYTICS = var.google_headline_test_analytics
+
     }
   }
   layers = [
