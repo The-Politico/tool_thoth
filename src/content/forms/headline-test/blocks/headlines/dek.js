@@ -6,9 +6,8 @@ export default () => ({
   elements: [
     {
       type: 'mrkdwn',
-      text: 'Please provide your original headline along with at least '
-      + 'one alternative you want to test. If you need help coming up with '
-      + 'new headline ideas, check out our '
+      text: 'Please provide your original headline along with at least one '
+      + 'alternative you want to test. Need inspiration? Check out our '
       + `<https://docs.google.com/document/d/${HEADLINE_TEST_GUIDE()}|`
       + 'Best Practices Guide>.',
     },

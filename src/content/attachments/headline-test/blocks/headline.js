@@ -1,5 +1,7 @@
 export default (headlines) => {
-  const headlinesString = headlines.map((h) => (`– ${h}`)).join('\n');
+  const headlinesString = headlines
+    .map((h, idx) => (`${idx + 1}. ${h}`))
+    .join('\n');
 
   return {
     block_id: 'headline',

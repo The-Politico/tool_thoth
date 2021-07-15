@@ -4,7 +4,7 @@ export default (timezone) => ({
   elements: [
     {
       type: 'mrkdwn',
-      text: 'If the story is set to publish in the next half hour click '
+      text: 'If the story is set to publish in the next half hour, click '
       + '"Now." Otherwise, choose a time and date. These times should '
       + `be set in your local time set in Slack (*${timezone}*).`,
     },
