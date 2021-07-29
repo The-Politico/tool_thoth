@@ -50,6 +50,7 @@ const notifyHeadlineTest = async function notifyHeadlineTest(event) {
 
   const endRange = new Date(startRange.getTime() + 1800000);
 
+  await databases.headlineTest.sort();
   const requests = await databases.headlineTest.get();
 
   const requestsForAlert = requests.filter((r) => {

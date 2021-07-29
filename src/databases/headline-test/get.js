@@ -1,10 +1,8 @@
 import { HEADLINE_TESTS_SHEET } from 'Constants/locations';
 
 import gootenberg from 'Utils/gootenberg';
-import sort from './sort';
 
 const getDatabse = async function getDatabse() {
-  await sort();
   const data = await gootenberg.parse.table(HEADLINE_TESTS_SHEET());
 
   return data.Requests.map((row) => ({

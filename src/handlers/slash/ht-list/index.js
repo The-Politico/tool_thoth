@@ -8,7 +8,8 @@ import attachments from 'Content/attachments/index';
 
 import reportAnalytics from 'Utils/reportAnalytics';
 
-const editHeadlineTest = async function editHeadlineTest(event) {
+const listHeadlineTime = async function listHeadlineTime(event) {
+  await databases.headlineTest.sort();
   const requests = await databases.headlineTest.get();
 
   const filterString = event.text;
@@ -98,5 +99,5 @@ const editHeadlineTest = async function editHeadlineTest(event) {
 
 export default {
   command: `/${HT_LIST_REQUEST}`,
-  handler: editHeadlineTest,
+  handler: listHeadlineTime,
 };
