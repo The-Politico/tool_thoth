@@ -5,9 +5,8 @@ import blocks from './blocks';
 const view = async function view(self) {
   const output = [];
 
-  const requests = await database.get();
+  const requests = await database.getUpcoming();
   const options = requests
-    .filter((row) => row.publishDate.getTime() > (new Date()).getTime())
     .map((row) => {
       const firstHeadline = row.headlines.filter((h) => !!h)[0];
 

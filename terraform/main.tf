@@ -75,7 +75,6 @@ resource "aws_lambda_function" "function" {
       GOOGLE_HEADLINE_TESTS = var.google_headline_test_sheet
       GOOGLE_HEADLINE_HELP = var.google_headline_test_help
       GOOGLE_HEADLINE_ANALYTICS = var.google_headline_test_analytics
-
     }
   }
   layers = [

@@ -14,60 +14,63 @@ const newHeadlineRequest = async function newHeadlineRequest(event, payload) {
 
   const form = forms.headlineTest(view);
 
-  await form.updateTimezone(payload.user.id);
+  form.updateTimezone(payload.user.id)
+    .then(() => form.updateTimezone(payload.user.id))
+    .then(() => form.updateValues(payload))
+    .then(() => form.validate())
+    .then(([formValid, errorMsg]) => {
+      if (formValid) {
+        return form
+          .export()
+          .then(() => {
+            const analyticsSubhandler = form.state.useEditingMeta
+              ? 'edit' : 'new';
+            reportAnalytics({
+              user: payload.user.id,
+              handler: 'view_submission',
+              subhandler: analyticsSubhandler,
+            });
 
-  form.updateValues(payload);
+            if (!form.values.publishDate) {
+              const notificationText = messages.headlineTestNotification(
+                form.state.useEditingMeta,
+              );
 
-  const [formValid, dialogView] = await form.validate();
+              const notificationAttachmennt = attachments.headlineTest(
+                { id: form.id },
+              );
 
-  if (formValid) {
-    form
-      .export()
-      .then(() => {
-        const analyticsSubhandler = form.state.useEditingMeta
-          ? 'edit' : 'new';
-        reportAnalytics({
-          user: payload.user.id,
-          handler: 'view_submission',
-          subhandler: analyticsSubhandler,
-        });
+              return notificationAttachmennt
+                .import()
+                .then(() => slack.postMessage({
+                  ...HEADLINE_TEST_BOT,
+                  channel: HEADLINE_TEST_CHANNEL(),
+                  text: notificationText,
+                  attachments: [
+                    notificationAttachmennt.view(),
+                  ],
+                }));
+            }
 
-        if (!form.values.publishDate) {
-          const notificationText = messages.headlineTestNotification(
-            form.state.useEditingMeta,
-          );
+            return new Promise((resolve) => resolve());
+          });
+      }
+      /* If form not valid */
 
-          const notificationAttachmennt = attachments.headlineTest(
-            { id: form.id },
-          );
-
-          return notificationAttachmennt
-            .import()
-            .then(() => slack.postMessage({
-              ...HEADLINE_TEST_BOT,
-              channel: HEADLINE_TEST_CHANNEL(),
-              text: notificationText,
-              attachments: [
-                notificationAttachmennt.view(),
-              ],
-            }));
-        }
-
-        return new Promise((resolve) => resolve());
-      })
-      .catch((e) => {
-        log(e, 'error');
+      return slack.postMessage({
+        ...HEADLINE_TEST_BOT,
+        channel: payload.user.id,
+        text: errorMsg[0].text,
+        blocks: errorMsg,
       });
-
-    return {
-      response_action: 'update',
-      view: dialogView,
-    };
-  }
+    })
+    .catch((e) => {
+      log(e, 'error');
+    });
 
   return {
-    response_action: 'push',
-    view: dialogView,
+    response_action: 'update',
+    view: form.confirmation(),
   };
 };
 

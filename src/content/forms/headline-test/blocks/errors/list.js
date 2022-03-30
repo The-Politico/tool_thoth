@@ -6,7 +6,7 @@ export default (errors) => ({
     text: Object
       .keys(errors)
       .map(
-        (sectionName) => `*${sectionName}*\n${errors[sectionName].join('')}`,
+        (sectionName) => `*Error: ${sectionName}*\n${errors[sectionName].join('')}`,
       ).join('\n\n'),
   },
 });

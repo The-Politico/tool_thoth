@@ -13,6 +13,7 @@ import validateFutureDate from './validateFutureDate';
 import exportValues from './exportValues';
 import importValues from './importValues';
 import updateTimezone from './updateTimezone';
+import confirmation from './confirmation';
 
 const htRequest = function htRequest(
   currentViewOrThothId = {},
@@ -46,6 +47,7 @@ const htRequest = function htRequest(
   self.parse = (parseableObj) => parse(self, parseableObj);
   self.view = () => getView(self);
   self.validate = () => validate(self);
+  self.confirmation = () => confirmation(self);
   self.import = () => importValues(self);
   self.export = () => exportValues(self);
   self.updateTimezone = async (user) => updateTimezone(self, user);

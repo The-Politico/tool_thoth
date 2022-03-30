@@ -1,9 +1,15 @@
 import get from './get';
-import sort from './sort';
-import getRequestByLink from './getRequestByLink';
+import append from './append';
+import getByLink from './getByLink';
+import getById from './getById';
+import getUpcoming from './getUpcoming';
+import updateById from './updateById';
 
 export default {
   get,
-  sort,
-  getRequestByLink,
+  append,
+  getByLink,
+  getById,
+  updateById,
+  getUpcoming,
 };

@@ -12,3 +12,4 @@ export const HEADLINE_TEST_GUIDE = () => process.env.GOOGLE_HEADLINE_HELP;
 export const HEADLINE_TEST_ANALYTICS = () => (
   process.env.GOOGLE_HEADLINE_ANALYTICS
 );
+export const HEADLINE_TEST_DATABASE = () => process.env.HEADLINE_TEST_DATABASE;
