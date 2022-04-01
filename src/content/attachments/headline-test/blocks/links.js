@@ -1,4 +1,6 @@
-import { HEADLINE_TESTS_SHEET } from 'Constants/locations';
+import {
+  HEADLINE_TEST_DATABASE,
+} from 'Constants/locations';
 import { HT_SEE_REQUESTS_CLICK, HT_SEE_STORY_CLICK } from 'Constants/actions';
 
 export default (link) => ({
@@ -19,7 +21,7 @@ export default (link) => ({
       type: 'button',
       action_id: HT_SEE_REQUESTS_CLICK,
       value: HT_SEE_REQUESTS_CLICK,
-      url: `https://docs.google.com/spreadsheets/d/${HEADLINE_TESTS_SHEET()}/edit`,
+      url: `https://www.notion.so/${HEADLINE_TEST_DATABASE}`,
       text: {
         type: 'plain_text',
         text: 'See All Requests',
