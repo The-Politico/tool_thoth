@@ -12,7 +12,7 @@
     "bundle": "node ./bin/bundle.js",
     "prebundle": "yarn build",
     "build": "rollup --config config/rollup.es.js",
-    "ship": "terraform apply -var-file=\"terraform/config/config.tfvars\" -var-file=\"terraform/config/config.tfvars.secret\" ./terraform",
+    "ship": "terraform -chdir=./terraform apply -var-file=\"config/config.tfvars\" -var-file=\"config/config.tfvars.secret\"",
     "dev": "nodemon --ignore dist --exec npm run build",
     "dev-start": "node src/dev.js",
     "lint-scripts": "eslint \"./@(lib|bin)/**/*.js?(x)\"",
