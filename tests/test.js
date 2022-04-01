@@ -11,7 +11,7 @@ import database from '../src/databases';
 dotenv.config();
 
 process.env.TESTING = 'true';
-process.env.HEADLINE_TEST_DATABASE = '54797e32cce343319911e95d3adb0c20';
+process.env.HEADLINE_TEST_DATABASE = '4f6e61f23b1241aab3f54bf4607ba132';
 
 describe('Database', () => {
   it('Gets data from a database', async () => {
