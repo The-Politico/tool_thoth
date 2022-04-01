@@ -1,29 +1,34 @@
-import { HEADLINE_TESTS_SHEET } from 'Constants/locations';
+import { Client as NotionClient } from '@notionhq/client';
+import fromText from '../../utils/notion/fromText';
+import { HEADLINE_TEST_DATABASE } from '../../constants/locations';
 
-import gootenberg from 'Utils/gootenberg';
+export default async function getDatabse(filter) {
+  const notion = new NotionClient({
+    auth: process.env.NOTION_TOKEN,
+  });
 
-const getDatabse = async function getDatabse() {
-  const data = await gootenberg.parse.table(HEADLINE_TESTS_SHEET());
+  const data = await notion.databases.query({
+    database_id: HEADLINE_TEST_DATABASE(),
+    filter,
+  });
 
-  return data.Requests.map((row) => ({
-    id: row.id,
-    link: row.link,
-    user: row.last_updated_by,
-    publishDate: new Date(parseInt(row.publish_date, 10)),
-    notes: row.notes,
+  return data.results.map((row) => ({
+    id: fromText(row.properties['Form Id'].title),
+    link: fromText(row.properties.Link.rich_text),
+    user: fromText(row.properties['Last Updated By'].rich_text),
+    publishDate: new Date(row.properties['Publish Date'].date.start),
+    notes: fromText(row.properties.Notes.rich_text),
     headlines: [
-      row.headline_one,
-      row.headline_two,
-      row.headline_three,
-      row.headline_four,
-      row.headline_five,
-      row.headline_six,
-      row.headline_seven,
-      row.headline_eight,
-      row.headline_nine,
-      row.headline_ten,
+      fromText(row.properties['Headline One'].rich_text),
+      fromText(row.properties['Headline Two'].rich_text),
+      fromText(row.properties['Headline Three'].rich_text),
+      fromText(row.properties['Headline Four'].rich_text),
+      fromText(row.properties['Headline Five'].rich_text),
+      fromText(row.properties['Headline Six'].rich_text),
+      fromText(row.properties['Headline Seven'].rich_text),
+      fromText(row.properties['Headline Eight'].rich_text),
+      fromText(row.properties['Headline Nine'].rich_text),
+      fromText(row.properties['Headline Ten'].rich_text),
     ].filter((h) => !!h),
   }));
-};
-
-export default getDatabse;
+}

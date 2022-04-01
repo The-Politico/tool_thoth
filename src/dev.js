@@ -1,5 +1,6 @@
 /* eslint-disable-next-line import/no-extraneous-dependencies */
 const express = require('express');
+require('dotenv').config();
 
 const { handler } = require('../dist');
 

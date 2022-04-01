@@ -21,10 +21,6 @@ variable "slack_headline_test_channel" {
   type = string
 }
 
-variable "google_headline_test_sheet" {
-  type = string
-}
-
 variable "google_headline_test_help" {
   type = string
 }
@@ -35,6 +31,14 @@ variable "google_headline_test_analytics" {
 }
 
 variable "lambda_api_token" {
+  type = string
+}
+
+variable "notion_api_token" {
+  type = string
+}
+
+variable "headline_test_database" {
   type = string
 }
 
@@ -72,10 +76,10 @@ resource "aws_lambda_function" "function" {
     variables = {
       AWS = "true"
       SLACK_HEADLINE_TEST_CHANNEL = var.slack_headline_test_channel
-      GOOGLE_HEADLINE_TESTS = var.google_headline_test_sheet
       GOOGLE_HEADLINE_HELP = var.google_headline_test_help
       GOOGLE_HEADLINE_ANALYTICS = var.google_headline_test_analytics
-
+      NOTION_TOKEN = var.notion_api_token
+      HEADLINE_TEST_DATABASE = var.headline_test_database
     }
   }
   layers = [

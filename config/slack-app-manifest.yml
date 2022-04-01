@@ -1,0 +1,38 @@
+display_information:
+  name: Headline Testing
+  description: Custom forms powered by the Interactive News team
+  background_color: "#121522"
+features:
+  bot_user:
+    display_name: Thoth
+    always_online: false
+  slash_commands:
+    - command: /headline-test-new
+      url: https://27b6-2601-143-8200-44d0-395b-c1b3-21bd-3cd3.ngrok.io/slash/
+      description: Request a new headline test
+      should_escape: false
+    - command: /headline-test-edit
+      url: https://27b6-2601-143-8200-44d0-395b-c1b3-21bd-3cd3.ngrok.io/slash/
+      description: Edit a headline test
+      should_escape: false
+    - command: /headline-test-all
+      url: https://27b6-2601-143-8200-44d0-395b-c1b3-21bd-3cd3.ngrok.io/slash/
+      description: List headline tests
+      usage_hint: DD/MM/YYY > DD/MM/YYY
+      should_escape: false
+oauth_config:
+  scopes:
+    bot:
+      - chat:write
+      - chat:write.public
+      - commands
+      - im:write
+      - users:read
+      - chat:write.customize
+settings:
+  interactivity:
+    is_enabled: true
+    request_url: https://27b6-2601-143-8200-44d0-395b-c1b3-21bd-3cd3.ngrok.io/interactivity/
+  org_deploy_enabled: false
+  socket_mode_enabled: false
+  token_rotation_enabled: false

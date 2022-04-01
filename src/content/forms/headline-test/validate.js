@@ -7,7 +7,6 @@ import validateFutureDate from './validateFutureDate';
 const validate = async function validate(self) {
   const {
     values,
-    state,
     id,
   } = self;
 
@@ -31,7 +30,7 @@ const validate = async function validate(self) {
     );
   }
 
-  const existingRow = await database.getRequestByLink(values.link);
+  const existingRow = await database.getByLink(values.link);
   if (existingRow && existingRow.id !== id) {
     formValid = false;
     appendOrCreate(
@@ -63,26 +62,16 @@ const validate = async function validate(self) {
     );
   }
 
-  const dialogView = formValid
-    ? {
-      type: 'modal',
-      title: state.useEditingMeta ? blocks.titles.edit : blocks.titles.create,
-      blocks: [
-        blocks.confirmation.one(state.useEditingMeta),
-        blocks.confirmation.two,
-        blocks.confirmation.three,
-      ],
-    }
-    : {
-      type: 'modal',
-      title: blocks.titles.error,
-      blocks: [
-        blocks.errors.list(errors),
-        blocks.errors.disclaimer,
-      ],
-    };
+  const errorMsg = [
+    blocks.titles.error,
+    blocks.errors.headline({
+      headline: values.headlines[0],
+      link: values.link,
+    }),
+    blocks.errors.list(errors),
+  ];
 
-  return [formValid, dialogView];
+  return [formValid, errorMsg];
 };
 
 export default validate;
