@@ -1,12 +1,14 @@
 import { log } from 'Utils/console';
 import urlVerification from './urlVerification';
-import reactionAdded from './reactionAdded';
-import message from './message';
+// import reactionAdded from './reactionAdded';
+// import message from './message';
 
 const typeHandlers = {
   [urlVerification.event]: urlVerification.handler,
-  [reactionAdded.event]: reactionAdded.handler,
-  [message.event]: message.handler,
+
+  /* Going to deploy with this feature turned off for now */
+  // [reactionAdded.event]: reactionAdded.handler,
+  // [message.event]: message.handler,
 };
 
 const eventsHandler = function eventsHandler(request, event) {
@@ -18,7 +20,7 @@ const eventsHandler = function eventsHandler(request, event) {
   const typeHandler = typeHandlers[type];
 
   if (!typeHandler) {
-    log('No type handler: ', type);
+    log(`No type handler: ${type}`, 'warning');
     return false;
   }
 

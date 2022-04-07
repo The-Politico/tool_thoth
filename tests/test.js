@@ -86,6 +86,39 @@ describe('Database', () => {
     expect(updatedCheckData.notes).to.be(updatedNote);
   });
 
+  it('Updates the row\'s status', async () => {
+    const publishDate = new Date();
+    const publishDateISO = publishDate.toISOString();
+
+    const id = `VS-${publishDateISO}`;
+
+    await database.headlineTest.append({
+      id,
+      publishDate: new Date(publishDate),
+    });
+
+    const notificationTs = `${publishDate.getTime()}`;
+    await database.headlineTest.updateNotificationById(
+      id, notificationTs,
+    );
+
+    const checkData = await database.headlineTest.getById(id);
+    expect(checkData.status).to.be('Notified');
+    expect(checkData.notification).to.be(notificationTs);
+
+    await database.headlineTest.updateStatusByNotification(
+      notificationTs, 'Scheduled',
+    );
+    const secondCheckData = await database.headlineTest.getById(id);
+    expect(secondCheckData.status).to.be('Scheduled');
+
+    await database.headlineTest.updateStatusByNotification(
+      notificationTs, 'Complete',
+    );
+    const thirdCheckData = await database.headlineTest.getById(id);
+    expect(thirdCheckData.status).to.be('Complete');
+  });
+
   it('Gets upcoming tests', async () => {
     const publishDate = new Date(new Date().getTime() + 100000);
     const publishDateISO = publishDate.toISOString();

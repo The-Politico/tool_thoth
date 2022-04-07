@@ -1,4 +1,7 @@
 export default function fromSelect(node) {
-  // eslint-disable-next-line no-param-reassign
+  if (!node || !node.select) {
+    return undefined;
+  }
+
   return node.select.name;
 }
