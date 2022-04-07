@@ -1,10 +1,22 @@
+import getNextInterval from '../../utils/getNextInterval';
 import getDatabse from './get';
 
 export default async function getUpcoming() {
   return getDatabse({
-    property: 'Publish Date',
-    date: {
-      after: new Date().toISOString(),
-    },
+    and: [
+      {
+        property: 'Publish Date',
+        date: {
+          after: new Date().toISOString(),
+        },
+      },
+      {
+        property: 'Publish Date',
+        date: {
+          before: getNextInterval().toISOString(),
+        },
+      },
+    ],
+
   });
 }

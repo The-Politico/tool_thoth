@@ -58,7 +58,7 @@ export default async (request, context, callback) => {
 
   if (!endpointName || !(endpointName in endpointHandlers)) {
     const eResp = invalidSchemeError(endpointName);
-    log(`Response /  Error  /  ${eResp[1].statusCode}  /  ${JSON.parse(eResp[1].body).error}\n`);
+    log(`Response /  Error  /  ${eResp[1].statusCode}  /  ${JSON.parse(eResp[1].body).error}  /  ${endpointName}  \n`);
     callback(...eResp);
     return;
   }
