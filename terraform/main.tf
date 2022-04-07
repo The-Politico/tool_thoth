@@ -185,7 +185,7 @@ resource "aws_lambda_permission" "apigw" {
 resource "aws_cloudwatch_event_rule" "bridge" {
   name                = "${var.project_slug}__ht-update"
   description         = "Post the half-hour updates for headline tests"
-  schedule_expression = "cron(0/30 * ? * * *)"
+  schedule_expression = "cron(0/5 * ? * * *)"
 }
 
 resource "aws_cloudwatch_event_target" "bridge_target" {
