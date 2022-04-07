@@ -11,7 +11,7 @@ export default async function appendToDatabase(row) {
     link,
     user,
     publishDate,
-    headlines,
+    headlines = [],
     notes,
   } = row;
 

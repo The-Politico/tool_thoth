@@ -4,6 +4,7 @@ import forms from 'Content/forms/index';
 import attachments from 'Content/attachments/index';
 import messages from 'Content/messages/index';
 import reportAnalytics from 'Utils/reportAnalytics';
+import db from 'Databases/headline-test/index';
 
 import { HT_NEW_REQUEST } from 'Constants/callbacks';
 import { HEADLINE_TEST_CHANNEL } from 'Constants/locations';
@@ -49,7 +50,10 @@ const newHeadlineRequest = async function newHeadlineRequest(event, payload) {
                   attachments: [
                     notificationAttachmennt.view(),
                   ],
-                }));
+                }))
+                .then((resp) => {
+                  db.updateNotificationById(form.id, resp.ts);
+                });
             }
 
             return new Promise((resolve) => resolve());
