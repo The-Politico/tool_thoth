@@ -2,7 +2,7 @@ import slack from 'Utils/slack/index';
 import fromSlackDateTime from 'Utils/fromSlackDateTime';
 
 import database from 'Databases/headline-test/index';
-import getLastHour from 'Utils/getLastHour';
+import getLastInterval from 'Utils/getLastInterval';
 
 const exportValues = async function exportValues(self) {
   const { id, state, values } = self;
@@ -23,7 +23,7 @@ const exportValues = async function exportValues(self) {
 
   const fullPublishDate = (publishDate && publishTime)
     ? fromSlackDateTime(publishDate, publishTime, state.tzOffset)
-    : getLastHour();
+    : getLastInterval();
 
   if (!rowExists) {
     await database.append({

@@ -1,7 +1,7 @@
 export default function toNotionTime(dateObj) {
-  const systemOffset = `${(dateObj.getTimezoneOffset()) / 60}`;
-  const offsetZeroPadded = systemOffset.length === 1 ? `0${systemOffset}` : systemOffset;
-  const offsetWithSign = parseInt(systemOffset, 10) > 0 ? `-${offsetZeroPadded}` : `+${offsetZeroPadded}`;
+  const estOffset = '4';
+  const offsetZeroPadded = estOffset.length === 1 ? `0${estOffset}` : estOffset;
+  const offsetWithSign = parseInt(estOffset, 10) > 0 ? `-${offsetZeroPadded}` : `+${offsetZeroPadded}`;
 
   const year = dateObj.getFullYear();
   const month = `${dateObj.getMonth() + 1}`;
