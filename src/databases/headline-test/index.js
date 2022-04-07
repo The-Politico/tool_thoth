@@ -4,12 +4,16 @@ import getByLink from './getByLink';
 import getById from './getById';
 import getUpcoming from './getUpcoming';
 import updateById from './updateById';
+import updateNotificationById from './updateNotificationById';
+import updateStatusByNotification from './updateStatusByNotification';
 
 export default {
   get,
   append,
   getByLink,
   getById,
-  updateById,
   getUpcoming,
+  updateById,
+  updateNotificationById,
+  updateStatusByNotification,
 };

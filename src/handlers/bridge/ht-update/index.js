@@ -6,61 +6,12 @@ import messages from 'Content/messages/index';
 import attachments from 'Content/attachments/index';
 import { log } from 'Utils/console';
 import { HEADLINE_TEST_BOT } from 'Constants/users';
+import getNextInterval from 'Utils/getNextInterval';
 
-const getAlertTime = function parseCustomAlertTime(event) {
-  const now = new Date();
-  const def = [
-    now.getUTCHours(),
-    now.getUTCMinutes() >= 30 ? '30' : '00',
-  ];
+const notifyHeadlineTest = async function notifyHeadlineTest() {
+  const requestsForAlert = await databases.headlineTest.getUpcoming();
 
-  if (!event.alertTime) {
-    return def;
-  }
-
-  const alertTimeSplit = event.alertTime.split(':');
-  if (alertTimeSplit.length !== 2) {
-    return def;
-  }
-
-  const parsedHour = parseInt(alertTimeSplit[0], 10);
-  if (parsedHour < 1 || parsedHour > 23) {
-    return def;
-  }
-
-  const minute = alertTimeSplit[1];
-  if (minute !== '00' && minute !== '30') {
-    return def;
-  }
-
-  return [
-    alertTimeSplit[0],
-    alertTimeSplit[1],
-  ];
-};
-
-const notifyHeadlineTest = async function notifyHeadlineTest(event) {
-  const [alertTimeHour, alertTimeMinute] = getAlertTime(event);
-
-  const startRange = new Date();
-  startRange.setUTCHours(alertTimeHour);
-  startRange.setUTCMinutes(alertTimeMinute);
-  startRange.setUTCSeconds(0);
-  startRange.setUTCMilliseconds(0);
-
-  const endRange = new Date(startRange.getTime() + 1800000);
-
-  await databases.headlineTest.sort();
-  const requests = await databases.headlineTest.get();
-
-  const requestsForAlert = requests.filter((r) => {
-    const publishTime = r.publishDate.getTime();
-    return (
-      publishTime >= startRange.getTime() && publishTime < endRange.getTime()
-    );
-  });
-
-  log(`Bridge /  HT-Update  /  ${startRange} – ${endRange}  /  ${requestsForAlert.length} Requests Found  /\n`);
+  log(`Bridge /  HT-Update  /  ${new Date().toISOString()} – ${getNextInterval().toISOString()}  /  ${requestsForAlert.length} Requests Found  /\n`);
 
   if (requestsForAlert.length > 0) {
     await slack.postMessage({

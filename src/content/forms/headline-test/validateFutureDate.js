@@ -1,4 +1,5 @@
 import fromSlackDateTime from 'Utils/fromSlackDateTime';
+import getNextInterval from 'Utils/getNextInterval';
 
 const validateFutureDate = function validateFutureDate(self, day, time) {
   const datetimeValue = fromSlackDateTime(
@@ -11,10 +12,8 @@ const validateFutureDate = function validateFutureDate(self, day, time) {
     return false;
   }
 
-  const now = (new Date()).getTime();
-
   /* If time within half hour from now, consider it past */
-  if (datetimeValue.getTime() < now + 1800000) {
+  if (datetimeValue.getTime() < getNextInterval().getTime()) {
     return false;
   }
 
