@@ -13,10 +13,9 @@ export default async function getUpcoming() {
       {
         property: 'Publish Date',
         date: {
-          before: getNextInterval().toISOString(),
+          before: new Date(getNextInterval().getTime() + 60000).toISOString(),
         },
       },
     ],
-
   });
 }

@@ -11,7 +11,10 @@ import getNextInterval from 'Utils/getNextInterval';
 const notifyHeadlineTest = async function notifyHeadlineTest() {
   const requestsForAlert = await databases.headlineTest.getUpcoming();
 
-  log(`Bridge /  HT-Update  /  ${new Date().toISOString()} – ${getNextInterval().toISOString()}  /  ${requestsForAlert.length} Requests Found  /\n`);
+  const startTime = new Date().toISOString();
+  const endTime = new Date(getNextInterval().getTime() + 60000).toISOString();
+
+  log(`Bridge /  HT-Update  /  ${startTime} – ${endTime}  /  ${requestsForAlert.length} Requests Found  /\n`);
 
   if (requestsForAlert.length > 0) {
     await slack.postMessage({
