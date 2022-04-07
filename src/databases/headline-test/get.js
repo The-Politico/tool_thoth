@@ -1,5 +1,6 @@
 import { Client as NotionClient } from '@notionhq/client';
 import fromText from '../../utils/notion/fromText';
+import fromSelect from '../../utils/notion/fromSelect';
 import { HEADLINE_TEST_DATABASE } from '../../constants/locations';
 
 export default async function getDatabse(filter) {
@@ -18,6 +19,8 @@ export default async function getDatabse(filter) {
     user: fromText(row.properties['Last Updated By'].rich_text),
     publishDate: new Date(row.properties['Publish Date'].date.start),
     notes: fromText(row.properties.Notes.rich_text),
+    notification: fromText(row.properties.Notification.rich_text),
+    status: fromSelect(row.properties.Status),
     headlines: [
       fromText(row.properties['Headline One'].rich_text),
       fromText(row.properties['Headline Two'].rich_text),

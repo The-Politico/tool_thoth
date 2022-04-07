@@ -12,6 +12,7 @@ import serverError from './errors/serverError';
 import slashHandler from './slash';
 import interactivityHandler from './interactivity';
 import bridgeHandler from './bridge';
+import eventsHandler from './events';
 import testHandler from './test';
 
 const endpointHandlers = {
@@ -19,6 +20,7 @@ const endpointHandlers = {
   interactivity: interactivityHandler,
   bridge: bridgeHandler,
   test: testHandler,
+  events: eventsHandler,
 };
 
 export default async (request, context, callback) => {
