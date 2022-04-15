@@ -5,7 +5,7 @@ import blocks from './blocks';
 const view = async function view(self) {
   const output = [];
 
-  const requests = await database.getUpcoming();
+  const requests = await database.getFuture();
   const options = requests
     .map((row) => {
       const firstHeadline = row.headlines.filter((h) => !!h)[0];

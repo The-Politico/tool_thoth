@@ -143,4 +143,10 @@ describe('Database', () => {
     const data = await database.headlineTest.getUpcoming();
     expect(!!data.find((test) => test.id === id)).to.be(true);
   });
+
+  it('Gets editable tests', async () => {
+    const futureStoryId = 'V03B1RMU1CX';
+    const data = await database.headlineTest.getFuture();
+    expect(!!data.find((test) => test.id === futureStoryId)).to.be(true);
+  });
 });
