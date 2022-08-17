@@ -1,6 +1,6 @@
 provider "aws" {
   region = "us-east-1"
-  profile = "interactives"
+  profile = "apps"
 }
 
 terraform {
@@ -8,7 +8,7 @@ terraform {
   bucket = "politico-terraform-configs"
   key = "configs/lambda-thoth-api/terraform.tfstate"
   region = "us-east-1"
-  profile = "interactives"
+  profile = "apps"
   encrypt = true
   }
 }
